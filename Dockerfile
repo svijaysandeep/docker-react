@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:alpine
 
 WORKDIR '/app'
 
@@ -13,5 +13,6 @@ RUN npm run build
 FROM nginx
 # EXPOSE when we deploy on AWS.
 EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html
+# We are using an unnamed builder, because AWS is failing with named builds.
+COPY --from=0 /app/build /usr/share/nginx/html
 
