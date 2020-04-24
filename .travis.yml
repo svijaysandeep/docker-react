@@ -8,3 +8,21 @@ before_install:
 
 script:
     - docker run -e CI=true svijaysandeep/docker-react npm run test
+
+deploy:
+    provider: elasticbeanstalk
+    region: "us-west-1"
+    # name of the app on aws.
+    app: "docker-react"
+    env: "DockerReact-env"
+    # When travis decides to deploy your code base, to copy to S3 bucket. Use this zip, by elasticbeanstalk to deploy
+    bucket_name: "elasticbeanstalk-us-west-1-586333304578"
+    bucket_path: "docker-react"
+    # AWS_ACCESS_KEY & AWS_SECRET_KEY are local environment variables on travis-ci
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    # deploy only when code is pushed to master.
+    on:
+        branch: master
+
+
